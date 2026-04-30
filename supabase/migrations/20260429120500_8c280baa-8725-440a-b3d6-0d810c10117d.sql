@@ -1,0 +1,1 @@
+DELETE FROM public.leads WHERE source IN ('brief','daily_brief') AND enriched_at IS NULL;

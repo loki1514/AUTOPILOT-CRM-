@@ -1,0 +1,2 @@
+REVOKE ALL ON FUNCTION public.bump_integration_status(uuid, text, boolean, text, integer, integer) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.bump_integration_status(uuid, text, boolean, text, integer, integer) TO service_role;

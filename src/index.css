@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ATMOSPHERIC GLASS — Design system
+   Purpose: deep night-sky base + translucent glass cards.
+   Used by: every page in the app (global theme).
+   Notes:
+   - oklch only. No hex. No hsl in tokens.
+   - Tailwind v3 reads CSS var values as-is via tailwind.config.ts
+     mapping (no hsl() wrappers — plain colors). See tailwind config.
+   - Dark only. No .dark variant; no light theme.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --radius: 1.25rem;
+
+    /* Deep atmospheric night-sky base */
+    --background: oklch(0.14 0.03 260);
+    --foreground: oklch(0.98 0.005 250);
+
+    --card: oklch(0.22 0.025 260 / 55%);
+    --card-foreground: oklch(0.98 0.005 250);
+
+    --popover: oklch(0.18 0.03 260 / 92%);
+    --popover-foreground: oklch(0.98 0.005 250);
+
+    --primary: oklch(0.98 0.005 250);
+    --primary-foreground: oklch(0.14 0.03 260);
+
+    --secondary: oklch(0.28 0.03 260 / 60%);
+    --secondary-foreground: oklch(0.98 0.005 250);
+
+    --muted: oklch(0.28 0.03 260 / 50%);
+    --muted-foreground: oklch(0.72 0.02 255);
+
+    --accent: oklch(0.7 0.15 235);
+    --accent-foreground: oklch(0.14 0.03 260);
+
+    --critical: oklch(0.66 0.24 22);
+    --critical-foreground: oklch(0.98 0.005 250);
+    --warning:  oklch(0.78 0.18 65);
+    --warning-foreground: oklch(0.14 0.03 260);
+    --success:  oklch(0.78 0.20 145);
+    --success-foreground: oklch(0.14 0.03 260);
+    --info:     oklch(0.72 0.15 235);
+
+    /* Compatibility aliases for existing components */
+    --destructive: oklch(0.66 0.24 22);
+    --destructive-foreground: oklch(0.98 0.005 250);
+
+    --border: oklch(1 0 0 / 10%);
+    --input:  oklch(1 0 0 / 12%);
+    --ring:   oklch(0.7 0.15 235);
+
+    /* Sidebar (glass-strong rail) */
+    --sidebar-background: oklch(0.16 0.03 262 / 70%);
+    --sidebar-foreground: oklch(0.92 0.01 250);
+    --sidebar-primary: oklch(0.7 0.15 235);
+    --sidebar-primary-foreground: oklch(0.14 0.03 260);
+    --sidebar-accent: oklch(0.26 0.03 260 / 55%);
+    --sidebar-accent-foreground: oklch(0.98 0.005 250);
+    --sidebar-border: oklch(1 0 0 / 8%);
+    --sidebar-ring: oklch(0.7 0.15 235);
+
+    /* Stage colors retained for legacy stage chips */
+    --stage-lead:      oklch(0.72 0.02 255);
+    --stage-qualified: oklch(0.78 0.18 65);
+    --stage-proposal:  oklch(0.72 0.15 235);
+    --stage-closed:    oklch(0.78 0.20 145);
+    --stage-lost:      oklch(0.66 0.24 22);
+
+    --gradient-sky: radial-gradient(120% 80% at 50% 0%,
+      oklch(0.38 0.08 250) 0%,
+      oklch(0.22 0.05 260) 45%,
+      oklch(0.12 0.03 265) 100%);
+
+    --gradient-aurora:
+      radial-gradient(60% 40% at 80% 10%, oklch(0.6 0.2 280 / 50%) 0%, transparent 60%),
+      radial-gradient(50% 35% at 10% 20%, oklch(0.6 0.2 220 / 45%) 0%, transparent 60%);
+
+    --gradient-card: linear-gradient(180deg, oklch(1 0 0 / 8%) 0%, oklch(1 0 0 / 3%) 100%);
+
+    --shadow-glass:    0 8px 32px oklch(0 0 0 / 35%), inset 0 1px 0 oklch(1 0 0 / 10%);
+    --shadow-elevated: 0 20px 60px oklch(0 0 0 / 50%);
+    --shadow-card:     0 12px 40px oklch(0 0 0 / 35%);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html, body, #root {
+    min-height: 100vh;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--gradient-sky);
+    background-attachment: fixed;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+}
+
+@layer utilities {
+  /* === Glass surfaces ============================================ */
+  .glass {
+    background: oklch(1 0 0 / 6%);
+    border: 1px solid oklch(1 0 0 / 12%);
+    backdrop-filter: blur(28px) saturate(140%);
+    -webkit-backdrop-filter: blur(28px) saturate(140%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-glass);
+  }
+  .glass-strong {
+    background: oklch(1 0 0 / 10%);
+    border: 1px solid oklch(1 0 0 / 16%);
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-elevated);
+  }
+  .glass-subtle {
+    background: oklch(1 0 0 / 4%);
+    border: 1px solid oklch(1 0 0 / 8%);
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border-radius: var(--radius);
+  }
+
+  /* === Display typography ======================================= */
+  .text-display {
+    font-family: -apple-system, 'SF Pro Display', 'Inter Display', 'Inter', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: oklch(1 0 0 / 55%);
+    font-weight: 500;
+  }
+
+  /* === Live indicators ========================================== */
+  .pulse-dot {
+    position: relative;
+  }
+  .pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 currentColor;
+    animation: pulse-ring 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    opacity: 0.7;
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 currentColor; opacity: 0.7; }
+    70%  { box-shadow: 0 0 0 10px currentColor; opacity: 0; }
+    100% { box-shadow: 0 0 0 0 currentColor; opacity: 0; }
+  }
+
+  /* === Existing animation utilities (kept) ====================== */
+  .animate-fade-in { animation: fade-in 0.3s ease-out; }
+  .animate-slide-up { animation: slide-up 0.4s ease-out; }
+  .animate-scale-in { animation: scale-in 0.2s ease-out; }
+
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .shadow-elevated { box-shadow: var(--shadow-elevated); }
+}
+
+@keyframes fade-in   { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slide-up  { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+@keyframes scale-in  { from { opacity: 0; transform: scale(0.96) } to { opacity: 1; transform: scale(1) } }
+
+/* === Weather scene keyframes ==================================== */
+@keyframes sun-spin   { to { transform: rotate(360deg) } }
+@keyframes cloud-drift-l { from { transform: translateX(-15vw) } to { transform: translateX(115vw) } }
+@keyframes cloud-drift-r { from { transform: translateX(115vw) } to { transform: translateX(-15vw) } }
+@keyframes rain-fall  { to { transform: translateY(110vh) } }
+@keyframes star-twinkle { 0%,100% { opacity: 0.25 } 50% { opacity: 1 } }
+@keyframes moon-glow  { 0%,100% { filter: drop-shadow(0 0 18px oklch(0.92 0.04 90 / 35%)) } 50% { filter: drop-shadow(0 0 32px oklch(0.92 0.04 90 / 55%)) } }
+
+/* === Stage badges (legacy) ====================================== */
+.stage-lead      { background: var(--stage-lead); }
+.stage-qualified { background: var(--stage-qualified); }
+.stage-proposal  { background: var(--stage-proposal); }
+.stage-closed    { background: var(--stage-closed); }
+.stage-lost      { background: var(--stage-lost); }
+
+/* === PDF EXPORT SAFETY RULES (preserved) ======================== */
+.pdf-root .ps-info-card {
+  height: auto !important;
+  min-height: unset !important;
+}
+.pdf-root .ps-info-value {
+  max-height: none !important;
+  overflow: visible !important;
+  line-height: 1.45 !important;
+  word-break: break-word;
+}

@@ -1,0 +1,10 @@
+DELETE FROM public.activities;
+DELETE FROM public.intent_signals;
+DELETE FROM public.lead_contacts;
+DELETE FROM public.lead_properties;
+DELETE FROM public.cost_analyses;
+DELETE FROM public.layout_images;
+DELETE FROM public.requirements;
+DELETE FROM public.enrichment_jobs;
+DELETE FROM public.leads;
+DELETE FROM public.daily_briefs;

@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OfficeFlow — Master Build Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0c10;
+  --s1: #13151c;
+  --s2: #1a1d28;
+  --s3: #222535;
+  --border: #2a2e42;
+  --border2: #363b55;
+  --text: #e2e4f0;
+  --muted: #7a7f9a;
+  --dim: #4a4f6a;
+  --green: #22d37a;
+  --green-bg: rgba(34,211,122,0.08);
+  --green-border: rgba(34,211,122,0.2);
+  --blue: #4da6ff;
+  --blue-bg: rgba(77,166,255,0.08);
+  --blue-border: rgba(77,166,255,0.2);
+  --amber: #ffb347;
+  --amber-bg: rgba(255,179,71,0.08);
+  --amber-border: rgba(255,179,71,0.2);
+  --red: #ff6b6b;
+  --red-bg: rgba(255,107,107,0.08);
+  --red-border: rgba(255,107,107,0.2);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,0.08);
+  --teal: #2dd4bf;
+  --teal-bg: rgba(45,212,191,0.08);
+  --teal-border: rgba(45,212,191,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.6; }
+
+/* ── MASTHEAD ─────────────────────────────────────── */
+.masthead {
+  border-bottom: 1px solid var(--border);
+  padding: 52px 48px 44px;
+  position: relative;
+  overflow: hidden;
+}
+.masthead::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--green), var(--blue), var(--purple), transparent);
+}
+.mh-label {
+  font-family:'DM Mono',monospace;
+  font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--green); margin-bottom:18px;
+  display:flex; align-items:center; gap:10px;
+}
+.mh-label::before { content:''; width:28px; height:1px; background:var(--green); }
+h1 {
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,5vw,58px);
+  font-weight:800; letter-spacing:-.025em; line-height:1.0;
+  margin-bottom:18px;
+}
+h1 em { font-style:normal; color:var(--green); }
+.mh-sub { font-size:15px; color:var(--muted); max-width:620px; line-height:1.65; margin-bottom:28px; }
+.mh-stats {
+  display:flex; gap:32px; flex-wrap:wrap;
+}
+.mh-stat { }
+.mh-stat-val { font-family:'Syne',sans-serif; font-size:28px; font-weight:700; line-height:1; }
+.mh-stat-val.g { color:var(--green); }
+.mh-stat-val.b { color:var(--blue); }
+.mh-stat-val.a { color:var(--amber); }
+.mh-stat-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+
+/* ── NAV ──────────────────────────────────────────── */
+.sidenav {
+  position:fixed; top:0; left:0; height:100vh; width:220px;
+  background:var(--s1); border-right:1px solid var(--border);
+  padding:24px 0; overflow-y:auto; z-index:100;
+  display:flex; flex-direction:column;
+}
+.sn-logo {
+  font-family:'Syne',sans-serif; font-weight:800; font-size:15px;
+  padding:0 20px 20px; border-bottom:1px solid var(--border);
+  margin-bottom:16px; color:var(--text);
+}
+.sn-logo span { color:var(--green); }
+.sn-section {
+  font-family:'DM Mono',monospace; font-size:9px;
+  letter-spacing:.15em; text-transform:uppercase;
+  color:var(--dim); padding:12px 20px 6px;
+}
+.sn-link {
+  display:block; padding:7px 20px;
+  font-size:13px; color:var(--muted);
+  text-decoration:none; transition:color .15s;
+}
+.sn-link:hover { color:var(--text); }
+.sn-link.active { color:var(--green); }
+.sn-num {
+  font-family:'DM Mono',monospace; font-size:10px;
+  color:var(--dim); margin-right:6px;
+}
+
+/* ── LAYOUT ───────────────────────────────────────── */
+.main { margin-left:220px; }
+.wrap { max-width:880px; padding:0 48px; margin:0 auto; }
+
+/* ── SECTIONS ─────────────────────────────────────── */
+section { padding:56px 0; border-bottom:1px solid var(--border); }
+section:last-child { border-bottom:none; }
+.sec-eyebrow {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.18em; text-transform:uppercase;
+  margin-bottom:10px; display:flex; align-items:center; gap:10px;
+}
+.sec-eyebrow .num {
+  font-size:9px; padding:2px 7px;
+  border:1px solid; border-radius:2px;
+  font-weight:500;
+}
+h2 {
+  font-family:'Syne',sans-serif; font-size:26px;
+  font-weight:700; letter-spacing:-.02em;
+  margin-bottom:20px; line-height:1.15;
+}
+h2 em { font-style:normal; }
+h3 {
+  font-family:'Syne',sans-serif; font-size:16px;
+  font-weight:600; margin-bottom:10px; margin-top:28px;
+  color:var(--text);
+}
+p { color:var(--muted); margin-bottom:12px; line-height:1.7; }
+strong { color:var(--text); font-weight:500; }
+
+/* ── PHASE TIMELINE ───────────────────────────────── */
+.phase-row {
+  display:grid; grid-template-columns:80px 1fr;
+  gap:0; margin-bottom:2px;
+}
+.phase-time {
+  padding:20px 16px 20px 0;
+  text-align:right;
+  border-right:1px solid var(--border);
+  position:relative;
+}
+.phase-time::after {
+  content:'';
+  position:absolute; right:-5px; top:26px;
+  width:9px; height:9px; border-radius:50%;
+  border:2px solid var(--border2);
+  background:var(--bg);
+}
+.phase-row.active .phase-time::after {
+  background:var(--green); border-color:var(--green);
+  box-shadow:0 0 10px rgba(34,211,122,.4);
+}
+.phase-row.soon .phase-time::after { background:var(--amber); border-color:var(--amber); }
+.phase-row.later .phase-time::after { background:var(--dim); border-color:var(--dim); }
+.phase-time-label {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted);
+}
+.phase-time-val {
+  font-family:'Syne',sans-serif; font-size:13px;
+  font-weight:600; color:var(--text);
+}
+.phase-content { padding:16px 0 16px 24px; }
+.phase-title {
+  font-family:'Syne',sans-serif; font-size:15px;
+  font-weight:600; margin-bottom:8px; color:var(--text);
+}
+.phase-tasks { list-style:none; }
+.phase-tasks li {
+  font-size:13px; color:var(--muted);
+  padding:4px 0 4px 18px; position:relative;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.phase-tasks li::before {
+  content:''; position:absolute; left:0; top:12px;
+  width:6px; height:6px; border-radius:50%;
+  background:var(--border2);
+}
+.phase-tasks li.done::before { background:var(--green); }
+.phase-tasks li.fix::before { background:var(--red); }
+.phase-tasks li strong { color:var(--text); }
+.phase-tag {
+  display:inline-block; font-family:'DM Mono',monospace;
+  font-size:10px; padding:1px 7px; border-radius:2px;
+  letter-spacing:.06em; margin-left:6px; vertical-align:middle;
+}
+.tag-done { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+.tag-fix  { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+.tag-new  { background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-border); }
+.tag-dep  { background:var(--amber-bg); color:var(--amber); border:1px solid var(--amber-border); }
+
+/* ── BREAK / FIX TABLE ────────────────────────────── */
+.bftable { width:100%; border-collapse:collapse; font-size:13px; margin:20px 0; }
+.bftable th {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:10px 14px; text-align:left;
+  background:var(--s2); color:var(--muted);
+  border-bottom:1px solid var(--border);
+}
+.bftable td { padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.05); vertical-align:top; }
+.bftable tr:hover td { background:var(--s2); }
+.bftable td:first-child { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; font-weight:500; }
+.bftable td:nth-child(2) { color:var(--muted); }
+.bftable td:nth-child(3) { color:var(--green); }
+.bftable td:nth-child(4) { font-family:'DM Mono',monospace; font-size:10px; }
+.bftable .prio-1 { color:var(--red); }
+.bftable .prio-2 { color:var(--amber); }
+.bftable .prio-3 { color:var(--muted); }
+
+/* ── API STACK TABLE ──────────────────────────────── */
+.api-table { width:100%; border-collapse:collapse; font-size:13px; margin:16px 0; }
+.api-table th {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:9px 14px; text-align:left;
+  background:var(--s2); color:var(--muted);
+  border-bottom:1px solid var(--border);
+}
+.api-table td { padding:11px 14px; border-bottom:1px solid rgba(255,255,255,.04); color:var(--muted); vertical-align:top; }
+.api-table td:first-child { color:var(--text); font-weight:500; }
+.api-table tr:hover td { background:var(--s1); }
+.api-role { font-size:12px; }
+.api-status {
+  font-family:'DM Mono',monospace; font-size:10px;
+  padding:2px 8px; border-radius:2px; letter-spacing:.06em;
+}
+.api-broken { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+.api-ok     { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+.api-new    { background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-border); }
+
+/* ── SIGNAL SCHEMA ────────────────────────────────── */
+.code-block {
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:6px; padding:20px 22px;
+  font-family:'DM Mono',monospace; font-size:12px;
+  line-height:1.75; color:#9ca3c8; margin:16px 0;
+  overflow-x:auto;
+}
+.code-block .k { color:var(--purple); }
+.code-block .s { color:var(--green); }
+.code-block .c { color:var(--dim); font-style:italic; }
+.code-block .v { color:var(--amber); }
+.code-block .t { color:var(--teal); }
+
+/* ── SCORE MODEL ──────────────────────────────────── */
+.score-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:16px 0; background:var(--border); border:1px solid var(--border); }
+.score-cell { background:var(--s1); padding:20px; }
+.score-cell-num {
+  font-family:'Syne',sans-serif; font-size:36px;
+  font-weight:800; line-height:1; margin-bottom:6px;
+}
+.score-cell-label {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.1em; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.score-cell-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+.score-cell-weight {
+  font-family:'DM Mono',monospace; font-size:11px;
+  margin-top:10px; padding:4px 10px;
+  display:inline-block; border-radius:2px;
+}
+
+/* ── GATE RULES ───────────────────────────────────── */
+.gate-row {
+  display:flex; gap:12px; align-items:flex-start;
+  padding:12px 0; border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:13px;
+}
+.gate-badge {
+  font-family:'DM Mono',monospace; font-size:10px;
+  padding:3px 10px; border-radius:2px; letter-spacing:.06em;
+  white-space:nowrap; margin-top:1px;
+}
+.gate-ready  { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+.gate-review { background:var(--amber-bg); color:var(--amber); border:1px solid var(--amber-border); }
+.gate-hold   { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+.gate-text { color:var(--muted); flex:1; }
+.gate-text strong { color:var(--text); }
+
+/* ── CONTACT LOOP ─────────────────────────────────── */
+.persona-tier {
+  display:flex; gap:10px; flex-wrap:wrap;
+  margin:8px 0;
+}
+.persona-tag {
+  font-size:12px; padding:4px 12px; border-radius:2px;
+  border:1px solid var(--border2); color:var(--muted);
+}
+.persona-tag.p1 { border-color:var(--green-border); color:var(--green); background:var(--green-bg); }
+.persona-tag.p2 { border-color:var(--blue-border); color:var(--blue); background:var(--blue-bg); }
+.persona-tag.p3 { border-color:var(--amber-border); color:var(--amber); background:var(--amber-bg); }
+
+/* ── LOVABLE PROMPTS ──────────────────────────────── */
+.prompt-card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:6px; overflow:hidden; margin:16px 0;
+}
+.prompt-header {
+  background:var(--s2); border-bottom:1px solid var(--border);
+  padding:10px 16px; display:flex;
+  align-items:center; justify-content:space-between;
+}
+.prompt-header-title {
+  font-family:'DM Mono',monospace; font-size:11px;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  display:flex; align-items:center; gap:10px;
+}
+.prompt-platform {
+  font-family:'DM Mono',monospace; font-size:10px;
+  padding:2px 8px; border-radius:2px; letter-spacing:.06em;
+}
+.plat-lovable { background:var(--purple-bg); color:var(--purple); border:1px solid rgba(167,139,250,.2); }
+.plat-edge    { background:var(--teal-bg); color:var(--teal); border:1px solid var(--teal-border); }
+.copy-btn {
+  font-family:'DM Mono',monospace; font-size:10px;
+  color:var(--dim); background:none;
+  border:1px solid var(--border2); padding:3px 12px;
+  cursor:pointer; letter-spacing:.06em; text-transform:uppercase;
+  border-radius:2px; transition:all .2s;
+}
+.copy-btn:hover { color:var(--green); border-color:var(--green); }
+.prompt-body {
+  padding:20px 22px;
+  font-family:'DM Mono',monospace; font-size:12px;
+  line-height:1.8; color:#9ca3c8;
+  white-space:pre-wrap; word-wrap:break-word;
+  max-height:420px; overflow-y:auto;
+}
+.prompt-body::-webkit-scrollbar { width:3px; }
+.prompt-body::-webkit-scrollbar-thumb { background:var(--border); }
+.pk { color:var(--purple); }
+.ps { color:var(--green); }
+.pc { color:var(--dim); font-style:italic; }
+.pv { color:var(--amber); }
+.pt { color:var(--teal); }
+
+/* ── DECISION MATRIX ──────────────────────────────── */
+.dm-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); margin:16px 0; }
+.dm-cell { background:var(--s1); padding:22px; }
+.dm-cell h4 {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase;
+  margin-bottom:12px; padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.dm-cell ul { list-style:none; }
+.dm-cell ul li {
+  font-size:12px; color:var(--muted);
+  padding:5px 0 5px 14px; position:relative;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.dm-cell ul li::before { content:'→'; position:absolute; left:0; color:var(--dim); font-size:10px; top:6px; }
+
+/* ── CALLOUT ──────────────────────────────────────── */
+.callout {
+  border-left:2px solid var(--green);
+  background:var(--green-bg); padding:14px 18px;
+  margin:16px 0; border-radius:0 4px 4px 0;
+}
+.callout.amber { border-color:var(--amber); background:var(--amber-bg); }
+.callout.blue  { border-color:var(--blue); background:var(--blue-bg); }
+.callout.red   { border-color:var(--red); background:var(--red-bg); }
+.callout-title {
+  font-family:'DM Mono',monospace; font-size:10px;
+  letter-spacing:.12em; text-transform:uppercase;
+  color:var(--green); margin-bottom:6px;
+}
+.callout.amber .callout-title { color:var(--amber); }
+.callout.blue .callout-title { color:var(--blue); }
+.callout.red .callout-title { color:var(--red); }
+.callout p { color:var(--muted); font-size:13px; margin:0; }
+
+/* ── FOOTER ───────────────────────────────────────── */
+.footer {
+  padding:32px 48px; border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:'DM Mono',monospace; font-size:11px; color:var(--dim);
+  flex-wrap:wrap; gap:12px;
+}
+.footer-right { display:flex; gap:8px; flex-wrap:wrap; }
+.fpill {
+  font-size:10px; padding:3px 10px; border-radius:2px;
+  border:1px solid var(--border2); color:var(--muted);
+  letter-spacing:.06em;
+}
+
+@media(max-width:768px) {
+  .sidenav { display:none; }
+  .main { margin-left:0; }
+  .wrap { padding:0 20px; }
+  .masthead { padding:32px 20px; }
+  .score-grid, .dm-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR NAV -->
+<nav class="sidenav">
+  <div class="sn-logo">Office<span>Flow</span></div>
+  <div class="sn-section">Overview</div>
+  <a class="sn-link" href="#status"><span class="sn-num">00</span>Current status</a>
+  <a class="sn-link" href="#breaks"><span class="sn-num">01</span>What's broken</a>
+  <div class="sn-section">Pipeline</div>
+  <a class="sn-link" href="#flow"><span class="sn-num">02</span>Corrected flow</a>
+  <a class="sn-link" href="#perplexity"><span class="sn-num">03</span>Perplexity fix</a>
+  <a class="sn-link" href="#apollo"><span class="sn-num">04</span>Apollo contact loop</a>
+  <div class="sn-section">Intelligence</div>
+  <a class="sn-link" href="#signals"><span class="sn-num">05</span>Signal schema</a>
+  <a class="sn-link" href="#scoring"><span class="sn-num">06</span>Scoring model</a>
+  <div class="sn-section">Platform</div>
+  <a class="sn-link" href="#ui"><span class="sn-num">07</span>UI changes</a>
+  <a class="sn-link" href="#phases"><span class="sn-num">08</span>Build phases</a>
+  <a class="sn-link" href="#prompts"><span class="sn-num">09</span>Lovable prompts</a>
+  <a class="sn-link" href="#apis"><span class="sn-num">10</span>API stack</a>
+</nav>
+
+<div class="main">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="mh-label">Master Build Plan · OfficeFlow CRM · April 2026</div>
+  <h1>Updated <em>Plan</em></h1>
+  <p class="mh-sub">Everything from the full conversation synthesised into one document — broken pipeline fixes, new signal architecture, UI redesign spec, and sequenced build phases with Lovable prompts.</p>
+  <div class="mh-stats">
+    <div class="mh-stat"><div class="mh-stat-val g">6</div><div class="mh-stat-label">Pipeline breaks to fix</div></div>
+    <div class="mh-stat"><div class="mh-stat-val b">3</div><div class="mh-stat-label">Build phases</div></div>
+    <div class="mh-stat"><div class="mh-stat-val a">15</div><div class="mh-stat-label">Daily intent leads target</div></div>
+    <div class="mh-stat"><div class="mh-stat-val" style="color:var(--purple)">2–3 wks</div><div class="mh-stat-label">To full production quality</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- SECTION 00 — CURRENT STATUS -->
+<section id="status">
+  <div class="sec-eyebrow" style="color:var(--green)"><span class="num" style="color:var(--green);border-color:var(--green-border)">00</span>Current status</div>
+  <h2>Where the build <em style="color:var(--green)">stands today</em></h2>
+
+  <p>The Lovable CRM scaffold exists. Supabase tables are live. Apollo enrichment is partially wired. The city-aware geo filter has been fixed (BKC, HITEC City, Koramangala, etc. all mapped). The fundamental pipeline architecture — intent signals → Perplexity research → Apollo enrich → CRM — is correct in concept but broken in execution.</p>
+
+  <div class="callout amber">
+    <div class="callout-title">Critical issue right now</div>
+    <p>Perplexity is routing through OpenRouter instead of the real Perplexity API. Every research call is either failing silently or returning low-quality results. This is the single most important fix — nothing downstream works correctly until this is resolved.</p>
+  </div>
+
+  <p>The contact loop currently treats finding one profile as success. There is no fallback chain, no contact slate concept (3–7 contacts), no P1/P2/P3 persona priority, and no "minimum viable outreach set" gate before a lead is marked ready for outreach.</p>
+</section>
+
+<!-- SECTION 01 — BREAKS -->
+<section id="breaks">
+  <div class="sec-eyebrow" style="color:var(--red)"><span class="num" style="color:var(--red);border-color:var(--red-border)">01</span>What's broken</div>
+  <h2>Six breaks, <em style="color:var(--red)">prioritised</em></h2>
+
+  <table class="bftable">
+    <thead>
+      <tr><th>ID</th><th>What's broken</th><th>Fix</th><th>Priority</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>B1</td>
+        <td>Perplexity routes through OpenRouter. Wrong endpoint, wrong model string. Every call silently fails or returns low-quality research.</td>
+        <td>Change endpoint to api.perplexity.ai, model to llama-3.1-sonar-large-128k-online. One line in edge function.</td>
+        <td class="prio-1">P0 — TODAY</td>
+      </tr>
+      <tr>
+        <td>B2</td>
+        <td>Perplexity prompt only asks for company text (summary, news, funding). Never asks for a person's name or LinkedIn URL. Core job not being done.</td>
+        <td>Add profile-hunting section to prompt. Ask for decision-maker name, title, LinkedIn URL, confidence level as structured JSON.</td>
+        <td class="prio-1">P0 — TODAY</td>
+      </tr>
+      <tr>
+        <td>B3</td>
+        <td>No fallback when Apollo finds zero contacts. Pipeline stops. Lead shows "no decision-maker found" with nothing to do.</td>
+        <td>Wire cascading fallback chain: Perplexity name search → Apollo title search → Hunter.io domain search → manual queue.</td>
+        <td class="prio-1">P1 — Day 2</td>
+      </tr>
+      <tr>
+        <td>B4</td>
+        <td>Silent failures. When Perplexity or Apollo errors, pipeline returns success:true. Errors written to enrichment_jobs but never surfaced in UI.</td>
+        <td>Add console.log at every step. Surface actual error reason in toast. Show provider status in Enrich Now result.</td>
+        <td class="prio-2">P1 — Day 2</td>
+      </tr>
+      <tr>
+        <td>B5</td>
+        <td>Signal quality: Perplexity invents signals (lease expiry dates, office move dates) with no source evidence. Outreach reps are calling on hallucinated data.</td>
+        <td>New evidence-backed signal schema with source_url, published_date, verification_status. Discard signals with no source URL.</td>
+        <td class="prio-2">P1 — Week 1</td>
+      </tr>
+      <tr>
+        <td>B6</td>
+        <td>Perplexity output invisible in UI. Even on success, the research summary is buried in Lead Detail. No signal quality surfaced on Kanban card.</td>
+        <td>Add verification badge and key signal to Kanban card. Surface provider status in Enrich toast. Show full signal card in lead detail.</td>
+        <td class="prio-3">P2 — Week 1</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 02 — CORRECTED FLOW -->
+<section id="flow">
+  <div class="sec-eyebrow" style="color:var(--blue)"><span class="num" style="color:var(--blue);border-color:var(--blue-border)">02</span>Corrected flow</div>
+  <h2>The pipeline as it <em style="color:var(--blue)">should work</em></h2>
+
+  <p>The intended architecture is correct. The jobs are clear: Perplexity is the researcher and profile finder. Apollo is the enrichment engine only — it takes a LinkedIn URL or verified name and hydrates it with email, phone, and company data. It is not a discovery tool in this flow.</p>
+
+  <div class="callout blue">
+    <div class="callout-title">The fundamental rule</div>
+    <p>Perplexity finds the person. Apollo fills in their contact details. If Perplexity cannot find the person, Apollo falls back to its own database search — but LinkedIn-URL-first enrichment is always the preferred path because it's faster, more accurate, and cheaper on credits.</p>
+  </div>
+
+  <h3>Step-by-step corrected sequence</h3>
+
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Step</div><div class="phase-time-val">1</div></div>
+    <div class="phase-content">
+      <div class="phase-title">Intent signals trigger daily brief</div>
+      <ul class="phase-tasks">
+        <li>Signal weights (set by BD team in UI) determine which companies surface</li>
+        <li>Scheduled Supabase function runs at 7am — calls Perplexity + ScrapingBee</li>
+        <li>Companies ranked by weighted intent score, top 20 surface in Daily Briefs page</li>
+        <li>No Apollo calls at this stage — zero credit spend until human decides</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Step</div><div class="phase-time-val">2</div></div>
+    <div class="phase-content">
+      <div class="phase-title">Perplexity: company research + profile hunting</div>
+      <ul class="phase-tasks">
+        <li>Triggered when BD rep clicks "Enrich & Assign" on a Daily Brief company card</li>
+        <li><strong>Part A:</strong> Company research — signals with source URLs, dates, confidence scores</li>
+        <li><strong>Part B (new):</strong> Profile hunting — find decision-maker name + LinkedIn URL at that company in that city</li>
+        <li>Search priority: Head of Ops → Facilities Manager → Workplace Manager → COO → CEO → Founder</li>
+        <li>Returns structured JSON with both company signals and contact profile(s)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Step</div><div class="phase-time-val">3</div></div>
+    <div class="phase-content">
+      <div class="phase-title">Apollo: enrich by LinkedIn URL (preferred path)</div>
+      <ul class="phase-tasks">
+        <li>If Perplexity returned LinkedIn URL → Apollo people/match with that URL</li>
+        <li>Apollo returns: verified email, phone, current title, company details</li>
+        <li>This is the fastest and most accurate enrichment path</li>
+        <li>Contact written to lead_contacts with source='perplexity+apollo', confidence='high'</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row soon">
+    <div class="phase-time"><div class="phase-time-label">Step</div><div class="phase-time-val">3B</div></div>
+    <div class="phase-content">
+      <div class="phase-title">Fallback chain (if Perplexity found no LinkedIn URL)</div>
+      <ul class="phase-tasks">
+        <li><strong>Fallback 1:</strong> Perplexity second pass — "name search" prompt: find the person's name and title at [company] in [city]</li>
+        <li><strong>Fallback 2:</strong> Apollo mixed_people/search with title array + company name + city</li>
+        <li><strong>Fallback 3:</strong> Hunter.io domain search — email pattern match by job title</li>
+        <li><strong>Fallback 4:</strong> Write lead with company data only, flag status='needs_manual_research', surface in manual queue</li>
+        <li>Loop continues until minimum viable contact slate reached (3 contacts) or all paths exhausted</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Step</div><div class="phase-time-val">4</div></div>
+    <div class="phase-content">
+      <div class="phase-title">Outreach readiness gate + CRM insert</div>
+      <ul class="phase-tasks">
+        <li>Three-score model computed: verification_score, intent_score, contactability_score</li>
+        <li>Outreach readiness = weighted combination of all three</li>
+        <li>Gate check: verification ≥ 70 AND contactability ≥ 60 → outreach_ready</li>
+        <li>Lead auto-assigned to BD rep by city + load balancing</li>
+        <li>Lead appears on Kanban with signal badge, score, and contact count</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 03 — PERPLEXITY FIX -->
+<section id="perplexity">
+  <div class="sec-eyebrow" style="color:var(--teal)"><span class="num" style="color:var(--teal);border-color:var(--teal-border)">03</span>Perplexity fix</div>
+  <h2>The exact <em style="color:var(--teal)">prompt and endpoint</em> changes</h2>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">
+        research-perplexity/index.ts — endpoint fix
+        <span class="prompt-platform plat-edge">SUPABASE EDGE FN</span>
+      </div>
+      <button class="copy-btn" onclick="copyBlock('fix1')">Copy</button>
+    </div>
+    <div class="prompt-body" id="fix1"><span class="pc">// CHANGE THIS — currently wrong:</span>
+<span class="pk">const</span> url = <span class="ps">"https://openrouter.ai/api/v1/chat/completions"</span>
+<span class="pk">const</span> model = <span class="ps">"perplexity/sonar-pro"</span>
+
+<span class="pc">// TO THIS — correct Perplexity direct API:</span>
+<span class="pk">const</span> url = <span class="ps">"https://api.perplexity.ai/chat/completions"</span>
+<span class="pk">const</span> model = <span class="ps">"llama-3.1-sonar-large-128k-online"</span>
+
+<span class="pc">// Headers remain the same:</span>
+<span class="pc">// Authorization: Bearer ${PERPLEXITY_API_KEY}</span>
+<span class="pc">// Content-Type: application/json</span></div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">
+        New Perplexity system + user prompt (full replacement)
+        <span class="prompt-platform plat-edge">SUPABASE EDGE FN</span>
+      </div>
+      <button class="copy-btn" onclick="copyBlock('fix2')">Copy</button>
+    </div>
+    <div class="prompt-body" id="fix2"><span class="pc">// SYSTEM MESSAGE:</span>
+<span class="ps">"You are a B2B sales intelligence researcher specialising in managed office space demand signals for Indian companies. You return ONLY valid JSON. Never invent data. Never infer without evidence. If you cannot find a source URL for a claim, do not include the claim. If fewer than 2 verified signals exist, the intent_score must be capped at 40."</span>
+
+<span class="pc">// USER MESSAGE TEMPLATE:</span>
+<span class="ps">`Research the company "${lead.company}" located in ${lead.city}, India.
+
+Return ONLY this exact JSON structure with no preamble:
+
+{
+  "company_summary": "2 sentence factual summary",
+  "signals": [
+    {
+      "type": "funding | hiring | office_expansion | lease | relocation | leadership_change",
+      "claim": "specific factual claim",
+      "city": "city or null",
+      "event_date": "YYYY-MM-DD or null",
+      "source_url": "full URL — REQUIRED. Omit entire signal if no URL found.",
+      "source_type": "company filing | company website | job page | tier1 news | secondary news | linkedin_post | directory",
+      "source_title": "publication or page name",
+      "published_date": "YYYY-MM-DD or null",
+      "confidence": 0-100,
+      "verification_status": "verified | partially_verified | unverified",
+      "why_it_matters": "one sentence on office space relevance"
+    }
+  ],
+  "disqualified_claims": [
+    {
+      "claim": "claim you considered but rejected",
+      "reason": "no source | outdated | conflicting | too speculative"
+    }
+  ],
+  "decision_makers": [
+    {
+      "name": "full name or null",
+      "title": "exact title",
+      "linkedin_url": "full LinkedIn URL or null",
+      "confidence": "high | medium | low",
+      "search_method": "how you found this person"
+    }
+  ],
+  "intent_score": 0-100,
+  "intent_reasoning": "reasoning based only on verified signals above"
+}
+
+RULES:
+- Never invent lease end dates or office move dates
+- Never infer office need from headcount alone without supporting evidence  
+- For India: accept LinkedIn posts from verified senior leadership as partially_verified signals
+- A job posting for Workplace Manager or Facilities in the target city = high confidence hiring signal
+- Source older than 120 days: downgrade confidence by 30, mark verification as partially_verified
+- decision_makers: search priority is Head of Ops, Facilities Manager, Workplace Manager, COO, CEO, Founder
+- For decision_maker linkedin_url: only provide if you can find the actual LinkedIn profile URL. Do not guess."`</span></div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">India-specific calibration</div>
+    <p>Standard verification rules assume tier-1 press coverage. Indian lease and office data doesn't work that way. A LinkedIn post from a verifiable COO saying "scouting for new Mumbai space" + a job listing for "Workplace Manager, BKC" should clear the threshold as two independent partially_verified signals. The prompt above handles this — do not apply a two-press-source rule for India.</p>
+  </div>
+</section>
+
+<!-- SECTION 04 — APOLLO CONTACT LOOP -->
+<section id="apollo">
+  <div class="sec-eyebrow" style="color:var(--purple)"><span class="num" style="color:var(--purple);border-color:rgba(167,139,250,.2)">04</span>Apollo contact loop</div>
+  <h2>From one profile to a <em style="color:var(--purple)">contact slate</em></h2>
+
+  <p>The success condition changes from "one person found" to "minimum viable outreach set." The loop continues until 3 usable contacts are found or all paths are exhausted.</p>
+
+  <h3>Persona priority order</h3>
+
+  <div style="margin:12px 0 20px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">P1 — Primary targets (go here first)</div>
+    <div class="persona-tier">
+      <span class="persona-tag p1">Head of Administration</span>
+      <span class="persona-tag p1">Facilities Manager</span>
+      <span class="persona-tag p1">Workplace Manager</span>
+      <span class="persona-tag p1">Corporate Services</span>
+      <span class="persona-tag p1">Real Estate Manager</span>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;">P2 — Secondary targets</div>
+    <div class="persona-tier">
+      <span class="persona-tag p2">Head of Operations</span>
+      <span class="persona-tag p2">Procurement Manager</span>
+      <span class="persona-tag p2">People Operations</span>
+      <span class="persona-tag p2">HRBP</span>
+      <span class="persona-tag p2">Office Manager</span>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px;">P3 — Last resort (decision-makers, not buyers)</div>
+    <div class="persona-tier">
+      <span class="persona-tag p3">COO</span>
+      <span class="persona-tag p3">CEO</span>
+      <span class="persona-tag p3">Co-Founder</span>
+      <span class="persona-tag p3">Chief of Staff</span>
+      <span class="persona-tag p3">EA to Leadership</span>
+    </div>
+  </div>
+
+  <h3>Loop exit conditions</h3>
+  <div class="gate-row">
+    <span class="gate-badge gate-ready">SUCCESS</span>
+    <div class="gate-text">3+ valid contacts found, at least 1 is P1 persona, at least 2 have a LinkedIn URL</div>
+  </div>
+  <div class="gate-row">
+    <span class="gate-badge gate-review">PARTIAL</span>
+    <div class="gate-text">1–2 contacts found, or all P1s missing. Status = <strong>contacts_insufficient</strong>. Surfaces in rep's review queue, not auto-assigned.</div>
+  </div>
+  <div class="gate-row">
+    <span class="gate-badge gate-hold">HOLD</span>
+    <div class="gate-text">Zero contacts found after all fallbacks. Status = <strong>needs_manual_research</strong>. Appears in admin manual queue only.</div>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">Key change from current behaviour</div>
+    <p>Right now Apollo stops when one person is found — even if that person is a Founder with no email. The new loop only stops when the slate is viable. A Founder with no P1 and no email means the loop is not done. Keep searching.</p>
+  </div>
+</section>
+
+<!-- SECTION 05 — SIGNAL SCHEMA -->
+<section id="signals">
+  <div class="sec-eyebrow" style="color:var(--amber)"><span class="num" style="color:var(--amber);border-color:var(--amber-border)">05</span>Signal schema</div>
+  <h2>Evidence-backed signals, <em style="color:var(--amber)">not inferences</em></h2>
+
+  <p>The current signal schema stores conclusions. The new schema stores evidence. Every signal must have a source URL. If there is no URL, the signal is written to disqualified_claims, not signals. This is what makes the signal card trustworthy.</p>
+
+  <h3>New intent_signals table columns</h3>
+  <div class="code-block"><span class="k">Table:</span> intent_signals
+  id               uuid, pk
+  lead_id          uuid, FK → leads.id
+  signal_type      <span class="s">funding | hiring | office_expansion | lease | relocation | leadership_change</span>
+  claim            text  <span class="c">-- the specific factual claim</span>
+  city             text or null
+  event_date       date or null  <span class="c">-- when the event occurred</span>
+  source_url       text <span class="c">-- REQUIRED. No URL = signal is invalid.</span>
+  source_type      <span class="s">company_filing | company_website | job_page | tier1_news | secondary_news | linkedin_post | directory</span>
+  source_title     text  <span class="c">-- "Economic Times", "LinkedIn", etc.</span>
+  published_date   date or null
+  confidence       integer 0-100
+  verification_status  <span class="s">verified | partially_verified | unverified | conflicting</span>
+  why_it_matters   text  <span class="c">-- one sentence on managed office relevance</span>
+  score_contribution   integer  <span class="c">-- contribution to lead intent_score</span>
+  source_api       <span class="s">perplexity | scrapingbee | apollo | linkedin | meta | manual</span>
+  detected_at      timestamptz
+  created_at       timestamptz</div>
+
+  <h3>Score contribution rules</h3>
+  <div class="code-block"><span class="c">-- Only applied if verification_status = 'verified' or 'partially_verified'</span>
+<span class="c">-- If unverified or no source_url: contribution = 0, signal stored in disqualified_claims</span>
+
+funding (verified, last 90 days)         <span class="v">+30</span>
+funding (partially_verified)             <span class="v">+15</span>
+hiring — workplace/facilities role       <span class="v">+25</span>  <span class="c">-- direct office signal</span>
+hiring — general headcount growth        <span class="v">+10</span>
+office_expansion (verified)              <span class="v">+30</span>
+office_expansion (partially_verified)    <span class="v">+18</span>
+lease signal (verified, primary source)  <span class="v">+25</span>
+relocation signal                        <span class="v">+20</span>
+leadership_change (new Ops/Facilities)   <span class="v">+10</span>
+
+<span class="c">-- Recency multiplier applied after base score:</span>
+signal within 7 days    <span class="t">× 1.3</span>
+signal within 30 days   <span class="t">× 1.0</span>
+signal within 90 days   <span class="t">× 0.8</span>
+signal older than 90d   <span class="t">× 0.5</span>  <span class="c">(or reject if source_type = secondary_news)</span>
+
+<span class="c">-- Hard cap: if fewer than 2 verified signals → intent_score capped at 40</span></div>
+</section>
+
+<!-- SECTION 06 — SCORING MODEL -->
+<section id="scoring">
+  <div class="sec-eyebrow" style="color:var(--green)"><span class="num" style="color:var(--green);border-color:var(--green-border)">06</span>Scoring model</div>
+  <h2>Three scores, one <em style="color:var(--green)">outreach readiness gate</em></h2>
+
+  <p>The current single intent score conflates intelligence quality, demand likelihood, and reachability into one number. A "78" could mean excellent verified signals with zero contact data, or weak signals with a great phone number. Split them.</p>
+
+  <div class="score-grid">
+    <div class="score-cell">
+      <div class="score-cell-label" style="color:var(--blue)">Verification score</div>
+      <div class="score-cell-num" style="color:var(--blue)">V</div>
+      <div class="score-cell-desc">How trustworthy is the intelligence? Based on: number of verified signals, source quality (tier1 > linkedin_post), recency, and absence of conflicting signals.</div>
+      <div class="score-cell-weight" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)">Weight: 40%</div>
+    </div>
+    <div class="score-cell">
+      <div class="score-cell-label" style="color:var(--amber)">Intent score</div>
+      <div class="score-cell-num" style="color:var(--amber)">I</div>
+      <div class="score-cell-desc">How likely do they need managed office space now? Based on: signal type contributions × recency multipliers. Capped at 40 if fewer than 2 verified signals.</div>
+      <div class="score-cell-weight" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">Weight: 30%</div>
+    </div>
+    <div class="score-cell">
+      <div class="score-cell-label" style="color:var(--green)">Contactability score</div>
+      <div class="score-cell-num" style="color:var(--green)">C</div>
+      <div class="score-cell-desc">How reachable is the buying committee? Based on: number of contacts found, P1 presence (×1.5), verified email presence, LinkedIn URL presence, phone number presence.</div>
+      <div class="score-cell-weight" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)">Weight: 30%</div>
+    </div>
+  </div>
+
+  <div style="margin:20px 0 8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Outreach readiness = (V × 0.4) + (I × 0.3) + (C × 0.3)</div>
+
+  <h3>Action gates</h3>
+  <div class="gate-row">
+    <span class="gate-badge gate-ready">Outreach ready</span>
+    <div class="gate-text"><strong>Verification ≥ 70 AND Contactability ≥ 60</strong> — appears in rep's active Kanban, auto-assigned, Draft Outreach button enabled</div>
+  </div>
+  <div class="gate-row">
+    <span class="gate-badge gate-review">Manual review</span>
+    <div class="gate-text"><strong>Verification 40–69</strong> — goes to manager review queue. Rep can see it but cannot start outreach without manager approval.</div>
+  </div>
+  <div class="gate-row">
+    <span class="gate-badge gate-hold">Hold / discard</span>
+    <div class="gate-text"><strong>Verification &lt; 40</strong> — archived, not shown in active pipeline. Admin can recover from archive.</div>
+  </div>
+</section>
+
+<!-- SECTION 07 — UI CHANGES -->
+<section id="ui">
+  <div class="sec-eyebrow" style="color:var(--purple)"><span class="num" style="color:var(--purple);border-color:rgba(167,139,250,.2)">07</span>UI changes</div>
+  <h2>Platform redesign <em style="color:var(--purple)">spec</em></h2>
+
+  <p>Full redesign spec from the UI conversation, organised by page. All changes go into a single Lovable pass (see Section 09 for prompts).</p>
+
+  <h3>Global</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Remove all hard black borders. Replace every card with glass morphism: <code style="background:var(--s2);padding:1px 6px;border-radius:2px;font-size:11px;">backdrop-filter:blur(12px); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12)</code></li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Logo: "OfficeFlow" wordmark with animated green pulse dot</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Login: two-card role selector — Admin (sees all) vs Sales Rep (sees assigned only)</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Date filters: white text, frosted glass capsule, border-radius:999px</li>
+  </ul>
+
+  <h3>Dashboard (renamed from CRM)</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Remove: Average Intent Score, Leads Assigned count, Pipeline Value KPI cards, Activity Feed</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Add: Three animated source rings (Daily Briefs/teal, Meta/purple, LinkedIn/blue) with today + monthly counts</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Top Intent Leads: horizontal scrollable glass cards with large score number (red/yellow/green by range), key signal tag, quick action buttons</li>
+  </ul>
+
+  <h3>Intent Signals (merged page)</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Merge Intent Signals + Intent Indicators into one page. Remove duplicate nav item.</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Section A: Live signal feed with source URL, published date, verification badge, score contribution</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Section B: Signal weight sliders (self-learning) — BD team adjusts, daily brief re-scores on next run</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Signal card shows: claim, source URL (clickable), published_date, verification_status badge, disqualified_claims section</li>
+  </ul>
+
+  <h3>Lead detail — new signal card</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Three-score breakdown: Verification / Intent / Contactability each with bar and weight</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Signals list: verified (green left border), partially_verified (amber), unverified (grey) — each with clickable source URL</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Disqualified signals section: shows what was rejected and why — this is the trust-builder</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Contact slate: P1/P2/P3 tagged, data completeness pills (LinkedIn/Email/Phone), empty slot for "+enrich more"</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Outreach readiness gate banner: green if ready, amber if review, with "Draft Outreach" button that opens Claude</li>
+  </ul>
+
+  <h3>Daily Briefs (lead generation engine)</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Company cards grid — Perplexity + ScrapingBee research, no Apollo spend yet</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Each card: company logo (Clearbit), intent signal tags, signal strength bar, source badges</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Three action buttons per card: "Add to Leads" (no Apollo), "Enrich & Assign" (fires Apollo, shows credit cost in modal, max 3 contacts), "Not Relevant" (dismisses permanently, system learns)</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Bulk Enrich: checkbox select multiple cards → credit estimate modal → confirm → batch Apollo call (cap 10 companies)</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Enrichment visibility: contacts appear in enriching rep's Kanban only; admin sees all + enrichment log</li>
+  </ul>
+
+  <h3>Leads table</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Strip to exactly: Name | Company | Phone | LinkedIn (icon) | Status | Rep | Actions</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Status: Cold (grey badge), Hot (green), Future Pipeline (amber)</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• SPOC List tab: filtered to intent_score ≥ 65, enriched, status new/contacted — outreach-ready contact table with CSV export</li>
+  </ul>
+
+  <h3>Deals page</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Flippable cards: front = company, value, status, rep. Back = contact name, phone, email, LinkedIn, next action.</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Color-coded glass cards: Cold = grey, Hot = green-tint, Future Pipeline = amber-tint. No hard borders.</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Flip: CSS rotateY(180deg) on click, 0.4s ease-in-out, backface-visibility hidden</li>
+  </ul>
+
+  <h3>Integrations page</h3>
+  <ul style="list-style:none;margin:0 0 16px;">
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Apollo card: credits remaining, credits used today, leads enriched today, warning if &lt; 500 credits remain</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Perplexity card: USD spend this month, calls today, average cost per call</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• ScrapingBee card: credits remaining, pages scraped today</li>
+    <li style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;color:var(--muted);">• Status dots: green (healthy), yellow (&lt; 20% remaining), red (disconnected/zero)</li>
+  </ul>
+</section>
+
+<!-- SECTION 08 — BUILD PHASES -->
+<section id="phases">
+  <div class="sec-eyebrow" style="color:var(--amber)"><span class="num" style="color:var(--amber);border-color:var(--amber-border)">08</span>Build phases</div>
+  <h2>Three phases, <em style="color:var(--amber)">sequenced correctly</em></h2>
+
+  <!-- PHASE 1 -->
+  <h3>Phase 1 — Fix the pipeline (Days 1–2)</h3>
+  <p>Nothing else matters until the pipeline actually works. These are code fixes, not new features.</p>
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Day</div><div class="phase-time-val">1</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li class="fix"><strong>B1 FIX:</strong> Change Perplexity endpoint from OpenRouter to api.perplexity.ai <span class="phase-tag tag-fix">Break 1</span></li>
+        <li class="fix"><strong>B2 FIX:</strong> Replace Perplexity prompt with new evidence-backed schema + profile hunting section <span class="phase-tag tag-fix">Break 2</span></li>
+        <li class="fix"><strong>B4 FIX:</strong> Add console.log at every pipeline step. Surface errors in toast. <span class="phase-tag tag-fix">Break 4</span></li>
+        <li><strong>TEST:</strong> Run 5 real Mumbai companies through the new prompt. Check JSON output. Verify LinkedIn URLs are real profiles.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-row active">
+    <div class="phase-time"><div class="phase-time-label">Day</div><div class="phase-time-val">2</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li class="fix"><strong>B3 FIX:</strong> Wire fallback chain — Perplexity name search → Apollo title search → Hunter.io → manual queue <span class="phase-tag tag-fix">Break 3</span></li>
+        <li><strong>Contact loop:</strong> Change success condition from "1 found" to "3 P1+P2 contacts with LinkedIn" <span class="phase-tag tag-new">New</span></li>
+        <li><strong>Three-score model:</strong> Add verification_score, contactability_score columns to leads table. Compute on enrichment.</li>
+        <li><strong>Outreach gate:</strong> Add gate logic — only auto-assign leads with verification ≥ 70, contactability ≥ 60</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <h3>Phase 2 — UI redesign (Days 3–6)</h3>
+  <p>Apply the full Lovable redesign prompt (Section 09). This is one pass — all visual and feature changes together.</p>
+  <div class="phase-row soon">
+    <div class="phase-time"><div class="phase-time-label">Days</div><div class="phase-time-val">3–4</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li><strong>Lovable Phase A:</strong> Global glass morphism, logo, login role split, Dashboard rename, date filter capsules</li>
+        <li><strong>Lovable Phase B:</strong> Dashboard KPI ring infographic, top intent horizontal cards</li>
+        <li><strong>Lovable Phase C:</strong> Intent Signals merge, signal weight sliders, new signal card with source URLs</li>
+        <li><strong>Lovable Phase D:</strong> Lead detail — three-score breakdown, contact slate P1/P2/P3, outreach gate banner</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-row soon">
+    <div class="phase-time"><div class="phase-time-label">Days</div><div class="phase-time-val">5–6</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li><strong>Lovable Phase E:</strong> Daily Briefs engine — Enrich & Assign flow, "Not Relevant" dismiss, bulk enrich with credit modal</li>
+        <li><strong>Lovable Phase F:</strong> Leads table strip, SPOC List tab, Deals flippable cards</li>
+        <li><strong>Lovable Phase G:</strong> Integrations credit cards, BD Reps workload view, Settings role management</li>
+        <li><strong>Meta + LinkedIn webhooks:</strong> Zapier bridge setup for both channels → Supabase ingest functions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <h3>Phase 3 — Signal quality calibration (Weeks 2–3)</h3>
+  <p>This is where "Ahh, this signal is great" actually happens. It requires real data — running the system on actual Indian companies and tightening the verification rules based on what the team trusts vs what they dismiss.</p>
+  <div class="phase-row later">
+    <div class="phase-time"><div class="phase-time-label">Week</div><div class="phase-time-val">2</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li>Run 50 real target companies through the pipeline. Check: which signals are accurate, which are hallucinated.</li>
+        <li>Adjust Perplexity guardrails based on findings — tighten source type rules for India specifically.</li>
+        <li>Calibrate signal weight defaults based on which signals BD team finds actionable (via slider usage data).</li>
+        <li>Tune the "2 independent signals" threshold — verify it works for India without killing recall.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="phase-row later">
+    <div class="phase-time"><div class="phase-time-label">Week</div><div class="phase-time-val">3</div></div>
+    <div class="phase-content">
+      <ul class="phase-tasks">
+        <li>Analyse which dismissed signals are being "Not Relevant"d on Daily Briefs — feed back into brief generation.</li>
+        <li>Score model calibration: check if verification ≥ 70 gate is too strict or too loose based on actual outreach results.</li>
+        <li>Add "outreach angle" field to lead detail — Perplexity-generated opening line based on verified key signal.</li>
+        <li>LinkedIn Marketing API direct integration (replaces Zapier bridge) once developer access is approved.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 09 — LOVABLE PROMPTS -->
+<section id="prompts">
+  <div class="sec-eyebrow" style="color:var(--teal)"><span class="num" style="color:var(--teal);border-color:var(--teal-border)">09</span>Lovable prompts</div>
+  <h2>Copy-paste <em style="color:var(--teal)">Lovable prompts</em></h2>
+
+  <p>Run these in sequence. Wait for each phase to preview correctly before moving to the next.</p>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">Phase A — Global visual + login + dashboard shell <span class="prompt-platform plat-lovable">LOVABLE</span></div>
+      <button class="copy-btn" onclick="copyBlock('lv-a')">Copy</button>
+    </div>
+    <div class="prompt-body" id="lv-a"><span class="pc">// Apply to existing OfficeFlow codebase. Do not rebuild — modify existing.</span>
+
+<span class="pk">GLOBAL VISUAL:</span>
+Remove all hard black borders and card outlines across the entire application.
+Replace every card, panel, modal, and container with glass morphism:
+backdrop-filter: blur(12px)
+background: rgba(255,255,255,0.06)
+border: 1px solid rgba(255,255,255,0.12)
+box-shadow: 0 4px 24px rgba(0,0,0,0.25)
+Apply consistently to Kanban cards, dashboard panels, lead detail, integrations cards, deals cards.
+
+<span class="pk">LOGO:</span>
+Replace current logo with "OfficeFlow" wordmark (Syne or Geist font, weight 800).
+Add a 6px green (#22c55e) circle with a slow CSS pulse animation next to the logo.
+
+<span class="pk">LOGIN — ROLE SPLIT:</span>
+Replace single login with two role cards on the login screen: "Admin" and "Sales Rep".
+Admin sees all leads across all reps.
+Sales Rep sees only their assigned leads.
+Store role in Supabase users.role column ("admin" | "rep").
+Protect all routes — reps redirected to personal Kanban if they try to access admin views.
+
+<span class="pk">DATE FILTERS:</span>
+Change Today / This Week / This Month buttons to:
+background: rgba(255,255,255,0.1)
+border: 1px solid rgba(255,255,255,0.2)
+border-radius: 999px
+backdrop-filter: blur(8px)
+padding: 6px 20px
+color: white
+Active state: background rgba(255,255,255,0.25), stronger border.
+Remove any dark outlines.
+
+<span class="pk">NAVIGATION:</span>
+Rename "CRM" to "Dashboard" everywhere.
+Remove "Intent Indicators" from nav — merge into "Intent Signals".
+
+Build Phase A now. Preview and confirm before next phase.</div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">Phase B — Dashboard KPI rings + top intent cards <span class="prompt-platform plat-lovable">LOVABLE</span></div>
+      <button class="copy-btn" onclick="copyBlock('lv-b')">Copy</button>
+    </div>
+    <div class="prompt-body" id="lv-b"><span class="pk">DASHBOARD KPI CARDS:</span>
+Remove these KPI cards entirely: Average Intent Score, Leads Assigned, Pipeline Value.
+Keep: Total Leads Today (with delta vs yesterday).
+Add three new source cards: Meta Leads (today count), LinkedIn Leads (today count), Daily Brief Leads (today count).
+
+<span class="pk">LEADS BY SOURCE — REPLACE WITH RING INFOGRAPHIC:</span>
+Remove the current Leads by Source chart.
+Replace with a horizontal strip of 3 animated circular progress rings:
+- Daily Briefs ring: color #06b6d4 (teal)
+- Meta ring: color #8b5cf6 (purple)
+- LinkedIn ring: color #3b82f6 (blue)
+Each ring: large circle progress indicator, lead count in center (large bold number), source name below, "Today: X / This month: Y" beneath.
+Rings animate from 0 to actual percentage on page load (CSS animation, 1.2s ease-out).
+Make this the visual centrepiece of the dashboard header.
+
+<span class="pk">ACTIVITY FEED:</span>
+Remove the Activity Feed section entirely.
+
+<span class="pk">TOP INTENT LEADS:</span>
+Replace current list with horizontal scrollable row of intent lead cards.
+Each card (glass morphism style):
+- Lead name + company
+- Intent score: 48px bold number, red if <50, yellow if 50-70, green if >70
+- Top signal as a colored tag
+- Assigned rep avatar
+- Two buttons: "View" and "Assign"
+
+Build Phase B now.</div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">Phase C — Intent Signals merge + signal card + weight sliders <span class="prompt-platform plat-lovable">LOVABLE</span></div>
+      <button class="copy-btn" onclick="copyBlock('lv-c')">Copy</button>
+    </div>
+    <div class="prompt-body" id="lv-c"><span class="pk">INTENT SIGNALS PAGE (merged):</span>
+Combine Intent Signals and Intent Indicators into one page called "Intent Signals".
+
+Section A — Live signal feed:
+Each row shows: company name, signal type icon, signal claim text, source name (clickable URL), published date, verification badge (verified=green / partially_verified=amber / unverified=grey), score contribution badge.
+
+Section B — Signal weight panel (self-learning):
+Show signal types as adjustable sliders (0-100):
+Funding Round, Headcount Growth, Job Postings — Workplace/Facilities, Office Expansion News,
+LinkedIn Leadership Post, Meta Ad Engagement, Website Visit, Recent Hiring Surge.
+Each slider: label, current weight value, horizontal slider input.
+On change: update signal_weights table in Supabase (upsert by signal_type).
+Add info text below: "Adjusting these weights tells the Daily Brief engine what signals matter most. Leads will be re-scored on the next daily run."
+Add "Save Weights" button and "Reset to Default" link.
+
+<span class="pk">LEAD DETAIL — NEW SIGNAL CARD:</span>
+In the lead detail slide-over, replace the current intent section with:
+
+Three score boxes side by side: Verification Score / Intent Score / Contactability Score.
+Each box: score value (large), label, thin progress bar.
+
+Signals list with three visual states:
+- Verified: green left border (3px), green "verified" badge
+- Partially verified: amber left border, amber badge
+- Unverified/disqualified: grey, shown in a separate "Discarded signals" section below
+
+Each signal row: signal type tag, claim text, source name as clickable link, published date, confidence percentage.
+
+Discarded signals section: shows claim + reason (no source | outdated | conflicting | too speculative).
+This section is collapsed by default, expandable with a "Show discarded (N)" link.
+
+Contact slate section: shows contacts in a 2-column grid.
+Each contact: name, title, persona tier badge (P1/P2/P3), data completeness pills (LinkedIn / Email / Phone — green if present, grey if missing).
+Empty slot card: dashed border, "+ enrich more contacts" text.
+
+Outreach readiness gate banner at bottom:
+Green if verification ≥ 70 and contactability ≥ 60: "Outreach ready" with "Draft Outreach" button.
+Amber if verification 40-69: "Manual review required" with "Request approval" button.
+
+Build Phase C now.</div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-header">
+      <div class="prompt-header-title">Phase D — Daily Briefs engine + Leads table + Deals cards <span class="prompt-platform plat-lovable">LOVABLE</span></div>
+      <button class="copy-btn" onclick="copyBlock('lv-d')">Copy</button>
+    </div>
+    <div class="prompt-body" id="lv-d"><span class="pk">DAILY BRIEFS PAGE — FULL REBUILD:</span>
+Daily Briefs is now a lead generation engine, not a passive data view.
+
+Header banner: "Today's Brief — [date] — X companies researched, Y awaiting your decision"
+Refresh button triggers /functions/daily-brief-run.
+
+Company cards grid (3 columns desktop, 1 mobile):
+Each card (glass morphism):
+- Company logo from https://logo.clearbit.com/[domain] (fallback: initials circle)
+- Company name, industry tag, headcount estimate, city
+- Top 2-3 signal tags (color-coded by type)
+- Signal strength bar (horizontal, fills based on intent_score from signal weights)
+- Source badges (Perplexity / ScrapingBee icons)
+- Three action buttons:
+
+  "Add to Leads" — inline form auto-fills company data, rep adds contact name/phone manually. Creates lead with source="daily_brief". Does NOT fire Apollo.
+
+  "Enrich & Assign" — fires Apollo people/match for this company. Shows confirmation modal: "Fetching up to 3 contacts for [company]. Estimated Apollo credit cost: 3 credits." Rep confirms. Modal shows returned contacts (name, title, email, phone, LinkedIn). Rep ticks which to add. Selected contacts inserted as leads in their Kanban. Credit cost shown in Integrations enrichment log.
+
+  "Not Relevant" — hides card permanently for this rep. Logs dismissal to daily_briefs.dismissed_by array.
+
+Bulk Enrich (top of page): checkbox on each card. "Bulk Enrich Selected (N)" button shows total credit estimate. Capped at 10 companies. Fires batch Apollo call on confirm.
+
+Enrichment visibility rule: enriched contacts appear in enriching rep's Kanban + admin full view. Not visible to other reps.
+
+<span class="pk">LEADS TABLE:</span>
+Strip to exactly these columns: Name | Company | Phone | LinkedIn (clickable icon) | Status | Assigned Rep | Actions
+Status dropdown: Cold (grey badge) / Hot (green badge) / Future Pipeline (amber badge)
+Filter bar: by Status, by Rep, search box.
+SPOC List tab: filter to intent_score ≥ 65, enriched, status = new or contacted. Show: Name, Title, Company, Email, Phone, LinkedIn icon, Key Signal, Rep, action buttons (Send Email, Log Call, Copy Contact). CSV export button.
+
+<span class="pk">DEALS PAGE — FLIPPABLE CARDS:</span>
+Grid of flippable cards. Each is a CSS flip card (rotateY 180deg on click, 0.4s ease-in-out, backface-visibility hidden).
+Front: company name, deal value, status badge, assigned rep avatar.
+Back: contact name, phone, email, LinkedIn, next action, last activity.
+Color-coded by status (glass morphism, no hard borders):
+Cold: rgba(100,100,120,0.08) background, rgba(100,100,120,0.2) border
+Hot: rgba(34,197,94,0.08) background, rgba(34,197,94,0.2) border
+Future Pipeline: rgba(251,191,36,0.08) background, rgba(251,191,36,0.2) border
+Filter row at top: All / Cold / Hot / Future Pipeline
+
+Build Phase D now.</div>
+  </div>
+
+</section>
+
+<!-- SECTION 10 — API STACK -->
+<section id="apis">
+  <div class="sec-eyebrow" style="color:var(--blue)"><span class="num" style="color:var(--blue);border-color:var(--blue-border)">10</span>API stack</div>
+  <h2>Complete <em style="color:var(--blue)">API inventory</em></h2>
+
+  <table class="api-table">
+    <thead>
+      <tr><th>Service</th><th>Role in pipeline</th><th>Current status</th><th>Action needed</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Perplexity API</td>
+        <td class="api-role">Company research + profile hunting (find LinkedIn URLs). Primary intelligence layer.</td>
+        <td><span class="api-status api-broken">BROKEN</span></td>
+        <td>Fix endpoint. New prompt. Test immediately.</td>
+      </tr>
+      <tr>
+        <td>Apollo.io</td>
+        <td class="api-role">Contact enrichment only — takes LinkedIn URL or name, returns email/phone/title. Not a discovery tool.</td>
+        <td><span class="api-status api-ok">WORKING</span></td>
+        <td>Change success condition. Wire fallback loop.</td>
+      </tr>
+      <tr>
+        <td>ScrapingBee</td>
+        <td class="api-role">Company website scraping — job pages, team pages, press sections for supporting signals.</td>
+        <td><span class="api-status api-ok">WORKING</span></td>
+        <td>Add credits display to Integrations page.</td>
+      </tr>
+      <tr>
+        <td>Hunter.io</td>
+        <td class="api-role">Fallback 3 in contact loop — domain + title → email pattern match.</td>
+        <td><span class="api-status api-new">ADD</span></td>
+        <td>Sign up at hunter.io/api-keys. Add to fallback chain.</td>
+      </tr>
+      <tr>
+        <td>Meta Lead Ads API</td>
+        <td class="api-role">Inbound webhook — Lead Ad form submissions → Supabase ingest function → auto-assign.</td>
+        <td><span class="api-status api-new">SETUP TOMORROW</span></td>
+        <td>Use Zapier bridge today. Direct API after LinkedIn approval.</td>
+      </tr>
+      <tr>
+        <td>LinkedIn Marketing API</td>
+        <td class="api-role">Inbound webhook — Lead Gen Form submissions → CRM. Also: organic prospect search via ConnectSafely MCP.</td>
+        <td><span class="api-status api-new">APPLY TODAY</span></td>
+        <td>Apply at linkedin.com/developers. Takes 1–3 days. Use Zapier bridge meanwhile.</td>
+      </tr>
+      <tr>
+        <td>Clearbit Logo API</td>
+        <td class="api-role">Company logos on Daily Brief cards. Free, no auth needed.</td>
+        <td><span class="api-status api-new">ADD</span></td>
+        <td>Use https://logo.clearbit.com/[domain] in company card img tags.</td>
+      </tr>
+      <tr>
+        <td>Resend</td>
+        <td class="api-role">Transactional email — send outreach emails directly from CRM, rep invite emails from Settings.</td>
+        <td><span class="api-status api-new">PHASE 2</span></td>
+        <td>Sign up at resend.com. 3000/mo free tier sufficient for Phase 1.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+</div><!-- /wrap -->
+
+<div class="footer" style="max-width:880px;margin:0 auto;">
+  <div>OfficeFlow Master Build Plan · Updated April 2026 · Claude Sonnet 4.6</div>
+  <div class="footer-right">
+    <span class="fpill">6 breaks identified</span>
+    <span class="fpill">3-score model</span>
+    <span class="fpill">4 Lovable prompts</span>
+    <span class="fpill">15 leads/day</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function copyBlock(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btn = el.closest('.prompt-card').querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+
+const links = document.querySelectorAll('.sn-link');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sn-link[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
