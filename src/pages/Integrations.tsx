@@ -128,7 +128,7 @@ export default function Integrations() {
                     <div className="rounded-lg bg-white/[0.03] p-2.5 col-span-2">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">Credits remaining</span>
-                        {s?.credits_remaining !== null && s.credits_remaining < 500 && (
+                        {s?.credits_remaining != null && s.credits_remaining < 500 && (
                           <Badge variant="outline" className="text-[10px] border-amber-500/30 text-amber-400">
                             <AlertTriangle className="mr-1 h-3 w-3" />
                             Low
