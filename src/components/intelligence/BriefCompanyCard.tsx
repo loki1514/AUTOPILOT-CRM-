@@ -20,8 +20,8 @@ interface BriefCompanyCardProps {
   talkingPoints?: string[];
   structured?: BriefStructuredData;
   leadId?: string;
-  onAddToLeads: () => Promise<void>;
-  onEnrich: () => Promise<void>;
+  onAddToLeads: () => Promise<unknown>;
+  onEnrich: () => Promise<unknown>;
   onViewLead?: () => void;
   onNotRelevant: () => void;
 }

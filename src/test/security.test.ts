@@ -236,7 +236,7 @@ describe("P2 UI Features — intended behavior", () => {
 
   describe("useLeads role filtering", () => {
     it("should return all leads for admin/master_admin", () => {
-      const role = "admin";
+      const role: string = "admin";
       const userId = "user-1";
       const leads = [
         { id: "1", user_id: "user-2", assigned_to: "user-3" },
