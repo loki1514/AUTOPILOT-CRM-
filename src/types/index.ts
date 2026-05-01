@@ -74,7 +74,8 @@ export type LeadSource =
   | 'website'
   | 'referral'
   | 'manual'
-  | 'brief';
+  | 'brief'
+  | 'daily_brief';
 
 export type ActivityType =
   | 'email'

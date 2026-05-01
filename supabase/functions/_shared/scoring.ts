@@ -36,6 +36,7 @@ export interface SignalLike {
   type?: string | null;
   verification_status?: VerificationStatus | null;
   source_url?: string | null;
+  source_type?: string | null;
   published_date?: string | null;
   event_date?: string | null;
   why_it_matters?: string | null;
