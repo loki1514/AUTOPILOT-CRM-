@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import type { LeadContact } from '@/types';
+export type { LeadContact };
 
 export function useLeadContacts(leadId?: string) {
   return useQuery({

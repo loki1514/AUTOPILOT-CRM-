@@ -62,7 +62,7 @@ describe("P0 Security Fixes — intended behavior", () => {
     it("should reject localhost URLs", async () => {
       // WHEN: company_url = "http://localhost:8080/internal"
       // THEN: Returns 400 { error: "company_url cannot point to internal or localhost addresses" }
-      const hostname = "localhost";
+      const hostname: string = "localhost";
       expect(hostname === "localhost" || hostname.endsWith(".local")).toBe(true);
     });
 
@@ -249,7 +249,7 @@ describe("P2 UI Features — intended behavior", () => {
     });
 
     it("should return only assigned leads for rep", () => {
-      const role = "rep";
+      const role: string = "rep";
       const userId = "user-1";
       const leads = [
         { id: "1", user_id: "user-2", assigned_to: "user-1" },

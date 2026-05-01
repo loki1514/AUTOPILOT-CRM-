@@ -40,7 +40,7 @@ export function useLeads() {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data as Lead[];
+      return (data ?? []) as unknown as Lead[];
     },
   });
 }
@@ -56,16 +56,15 @@ export function useLead(id: string | undefined) {
       let query = supabase
         .from('leads')
         .select('*')
-        .eq('id', id)
-        .single();
+        .eq('id', id);
 
       if (role === 'rep') {
         query = query.eq('assigned_to', userId);
       }
 
-      const { data, error } = await query;
+      const { data, error } = await query.maybeSingle();
       if (error) throw error;
-      return data as Lead;
+      return (data ?? null) as unknown as Lead | null;
     },
     enabled: !!id,
   });
@@ -84,7 +83,7 @@ export function useCreateLead() {
         .single();
 
       if (error) throw error;
-      return data as Lead;
+      return data as unknown as Lead;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
@@ -105,7 +104,7 @@ export function useUpdateLead() {
         .single();
 
       if (error) throw error;
-      return data as Lead;
+      return data as unknown as Lead;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
@@ -145,7 +144,7 @@ export function useUpdateLeadStage() {
         .single();
 
       if (error) throw error;
-      return data as Lead;
+      return data as unknown as Lead;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['leads'] });
