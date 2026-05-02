@@ -31,9 +31,10 @@ function getHealth(s?: IntegrationStatus): HealthStatus {
 }
 
 function getCreditHealth(s?: IntegrationStatus): HealthStatus {
-  if (!s || s.credits_remaining === null) return "unknown";
-  if (s.credits_remaining <= 0) return "critical";
-  if (s.credits_remaining < 500) return "warning";
+  const creditsRemaining = s?.credits_remaining;
+  if (typeof creditsRemaining !== "number") return "unknown";
+  if (creditsRemaining <= 0) return "critical";
+  if (creditsRemaining < 500) return "warning";
   return "healthy";
 }
 
