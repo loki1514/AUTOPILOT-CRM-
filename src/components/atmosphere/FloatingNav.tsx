@@ -4,7 +4,7 @@
  * Used by: MainLayout (mounted globally).
  * Behavior: hides on scroll-down, returns on scroll-up. AI orb has bobbing caption.
  */
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { LayoutDashboard, Users, Inbox, Target, Sparkles } from "lucide-react";
@@ -17,7 +17,7 @@ const items = [
   { to: "/indicators", label: "Forecast", icon: Target },
 ];
 
-export function FloatingNav() {
+const FloatingNav = forwardRef<HTMLDivElement>(function FloatingNav(_props, ref) {
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
 
@@ -38,6 +38,7 @@ export function FloatingNav() {
     <AnimatePresence>
       {!hidden && (
         <motion.div
+          ref={ref}
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
@@ -59,7 +60,9 @@ export function FloatingNav() {
       )}
     </AnimatePresence>
   );
-}
+});
+
+export { FloatingNav };
 
 function NavItem({ to, label, icon: Icon }: { to: string; label: string; icon: typeof LayoutDashboard }) {
   return (
