@@ -1,29 +1,30 @@
-I checked the live preview and the `/` dashboard is rendering in my browser session, but the dev overlay is reporting build-blocking TypeScript errors. That can make the preview appear blank or unusable for you, especially if the error overlay is active.
+I found one concrete issue in the dev-server logs that can keep causing the preview to appear broken after refreshes/restarts:
 
-Plan to fix it:
+```text
+[vite:css] @import must precede all other statements
+src/index.css line 16
+```
 
-1. Resolve the Daily Brief action callback type errors
-   - Update `DailyPulseView.tsx` so `onAddToLeads` and `onEnrich` callbacks return `Promise<void>` as expected by `BriefCompanyCard`.
-   - Keep the existing behavior: add/enrich still runs, invalidates queries, and shows the existing toast messages.
+The app rendered in my browser session on `/crm`, so this is not currently the old `credits_remaining` crash. The visible page loads, but the preview server is still reporting a CSS compilation warning/error because `@import` is placed after Tailwind directives. That kind of Vite overlay/server state can make the canvas look blank or stuck for you even when the React route itself is OK.
 
-2. Fix lead data typing issues
-   - Update `useLeads.ts` to safely cast backend rows to the app `Lead` type without TypeScript rejecting JSON fields like `disqualified_claims`.
-   - Fix the single-lead query flow where `.single()` is being called before role-based filtering, which causes `.eq()` to be unavailable afterward.
-   - Keep role behavior intact: reps only see assigned leads, admins/master admins see all allowed leads.
+Plan:
 
-3. Fix the missing `LeadContact` export import
-   - Update `useLeadsWithContacts.ts` to import `LeadContact` from the shared app types instead of from `useLeadContacts`, since `useLeadContacts` does not export that type.
+1. Fix the CSS import ordering
+   - Move the Google Fonts `@import` in `src/index.css` to the very top of the file, before `@tailwind base`, `@tailwind components`, and `@tailwind utilities`.
+   - Keep the Atmospheric Glass theme tokens and styles unchanged.
 
-4. Fix source-name mismatch on Dashboard
-   - Update the `LeadSource` type to include the source value currently used by the app: `daily_brief`.
-   - This matches `useConvertBriefItem.ts`, which inserts leads with `source: "daily_brief"`, and removes the Dashboard comparison error.
+2. Remove the leftover runtime warning if it is coming from our app code
+   - Investigate the “Function components cannot be given refs” warning shown in the browser console.
+   - If it is caused by a local component wrapper, convert the relevant component to `React.forwardRef` or remove the invalid ref pass-through.
+   - If it is only Lovable preview instrumentation and not app code, leave it alone.
 
-5. Fix test-only typing errors
-   - Add `source_type` to the shared scoring `SignalLike` interface, since scoring already reads it and tests correctly validate it.
-   - Adjust the two overly narrow test variables in `security.test.ts` so TypeScript doesn’t infer impossible literal comparisons like `'admin' === 'rep'` or `hostname.endsWith(...)` on `never`.
+3. Re-check the previously fixed `credits_remaining` path
+   - Confirm `Integrations.tsx` still uses optional chaining / normalized integration status everywhere.
+   - Search for any remaining direct `something.credits_remaining` access that could crash if a provider status is missing.
 
-6. Verify runtime-specific blank screen cause
-   - After implementation, reload the preview and inspect console output.
-   - The remaining console warning about function components receiving refs appears non-fatal; I’ll only address it if it is still connected to the blank screen after the build errors are cleared.
+4. Verify the preview after the fix
+   - Reload `/crm` and `/integrations`.
+   - Check console logs for actual runtime errors.
+   - Check dev-server logs again to confirm the CSS import warning is gone.
 
-No database or backend schema changes are needed for this fix.
+No database changes are needed for this fix.
