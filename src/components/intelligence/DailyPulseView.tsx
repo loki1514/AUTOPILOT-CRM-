@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { startOfDay, startOfWeek, startOfMonth } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
@@ -409,17 +409,19 @@ function BriefBody({ brief }: { brief: DailyBrief }) {
   );
 }
 
-function Section({
-  icon,
-  label,
-  children,
-  tone,
-}: {
+type SectionProps = {
   icon: React.ReactNode;
   label: string;
   children: React.ReactNode;
   tone: "success" | "warning" | "info" | "danger" | "violet" | "primary";
-}) {
+};
+
+const Section = forwardRef<HTMLDivElement, SectionProps>(function Section({
+  icon,
+  label,
+  children,
+  tone,
+}, ref) {
   const toneClass = {
     success: "text-emerald-600",
     warning: "text-amber-600",
@@ -429,7 +431,7 @@ function Section({
     primary: "text-foreground",
   }[tone];
   return (
-    <div className="space-y-3">
+    <div ref={ref} className="space-y-3">
       <div className={`flex items-center gap-2 font-semibold ${toneClass}`}>
         {icon}
         <span>{label}</span>
@@ -437,4 +439,4 @@ function Section({
       {children}
     </div>
   );
-}
+});
