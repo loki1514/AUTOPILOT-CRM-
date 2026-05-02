@@ -14,6 +14,21 @@ export interface IntegrationStatus {
   metadata: Record<string, unknown>;
 }
 
+function normalizeIntegrationStatus(row: Partial<IntegrationStatus>): IntegrationStatus {
+  return {
+    id: row.id ?? row.provider ?? "unknown",
+    user_id: row.user_id ?? "",
+    provider: row.provider ?? "unknown",
+    last_sync_at: row.last_sync_at ?? null,
+    last_success_at: row.last_success_at ?? null,
+    last_error: row.last_error ?? null,
+    total_calls_today: row.total_calls_today ?? 0,
+    total_leads_ingested: row.total_leads_ingested ?? 0,
+    credits_remaining: row.credits_remaining ?? null,
+    metadata: row.metadata ?? {},
+  };
+}
+
 export function useIntegrationStatus() {
   return useQuery({
     queryKey: ["integration-status"],
@@ -23,7 +38,7 @@ export function useIntegrationStatus() {
         .select("*")
         .order("provider");
       if (error) throw error;
-      return (data ?? []) as IntegrationStatus[];
+      return (data ?? []).map((row) => normalizeIntegrationStatus(row as Partial<IntegrationStatus>));
     },
     refetchInterval: 30_000,
   });
